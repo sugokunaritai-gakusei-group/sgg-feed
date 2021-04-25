@@ -1,0 +1,275 @@
+[
+  {
+    "name": "U014Y3KEZ5F",
+    "feeds": [
+      {
+        "service": "other",
+        "value": "https://feed.kota-yata.com/rss"
+      }
+    ]
+  },
+  {
+    "name": "U013L3TK6E8",
+    "feeds": [
+      {
+        "service": "qiita",
+        "value": "e_chan1007"
+      },
+      {
+        "service": "zenn",
+        "value": "e_chan1007"
+      }
+    ]
+  },
+  {
+    "name": "U012SGHLQA0",
+    "feeds": [
+      {
+        "service": "qiita",
+        "value": "inoue2002"
+      },
+      {
+        "service": "zenn",
+        "value": "inoue2002"
+      }
+    ]
+  },
+  {
+    "name": "U015BDFDK25",
+    "feeds": [
+      {
+        "service": "qiita",
+        "value": "Marny"
+      },
+      {
+        "service": "zenn",
+        "value": "marnysan"
+      }
+    ]
+  },
+  {
+    "name": "U012LBSKRCJ",
+    "feeds": [
+      {
+        "service": "qiita",
+        "value": "nztm"
+      },
+      {
+        "service": "zenn",
+        "value": "nztm"
+      }
+    ]
+  },
+  {
+    "name": "U012Z0CDUJV",
+    "feeds": [
+      {
+        "service": "qiita",
+        "value": "shinbunbun_"
+      }
+    ]
+  },
+  {
+    "name": "U012ZDBB2GP",
+    "feeds": [
+      {
+        "service": "qiita",
+        "value": "tmmn811"
+      }
+    ]
+  },
+  {
+    "name": "U0131C4TWBB",
+    "feeds": [
+      {
+        "service": "qiita",
+        "value": "TomiXRM"
+      }
+    ]
+  },
+  {
+    "name": "U0125KGK4RM",
+    "feeds": [
+      {
+        "service": "qiita",
+        "value": "YuseiIto"
+      },
+      {
+        "service": "zenn",
+        "value": "yuseiito"
+      }
+    ]
+  },
+  {
+    "name": "U01AVLVCW7K",
+    "feeds": [
+      {
+        "service": "qiita",
+        "value": "Ch31212y"
+      },
+      {
+        "service": "zenn",
+        "value": "sakura"
+      }
+    ]
+  },
+  {
+    "name": "U01D0K75WM8",
+    "feeds": [
+      {
+        "service": "qiita",
+        "value": "abcshotaro616"
+      }
+    ]
+  },
+  {
+    "name": "U01HM9XR4DB",
+    "feeds": [
+      {
+        "service": "qiita",
+        "value": "kyoya0819"
+      },
+      {
+        "service": "zenn",
+        "value": "kyoya0819"
+      }
+    ]
+  },
+  {
+    "name": "U01HRG5091B",
+    "feeds": [
+      {
+        "service": "qiita",
+        "value": "Hizuki10301030"
+      }
+    ]
+  },
+  {
+    "name": "U01HEHHTC3H",
+    "feeds": [
+      {
+        "service": "qiita",
+        "value": "FPC_COMMUNITY"
+      }
+    ]
+  },
+  {
+    "name": "U01L249FTNZ",
+    "feeds": [
+      {
+        "service": "qiita",
+        "value": "0505Keitan"
+      }
+    ]
+  },
+  {
+    "name": "U01LHRM0USV",
+    "feeds": [
+      {
+        "service": "qiita",
+        "value": "hinatao3o"
+      }
+    ]
+  },
+  {
+    "name": "U01L05DKCB0",
+    "feeds": [
+      {
+        "service": "qiita",
+        "value": "tkgshn"
+      },
+      {
+        "service": "zenn",
+        "value": "tkgshn"
+      }
+    ]
+  },
+  {
+    "name": "U01M0H6KR3J",
+    "feeds": [
+      {
+        "service": "qiita",
+        "value": "taichi_swift_"
+      }
+    ]
+  },
+  {
+    "name": "U0131UNP11V",
+    "feeds": [
+      {
+        "service": "qiita",
+        "value": "denpa810"
+      }
+    ]
+  },
+  {
+    "name": "U01LUAU7VME",
+    "feeds": [
+      {
+        "service": "qiita",
+        "value": "yuki384"
+      },
+      {
+        "service": "zenn",
+        "value": "yuki384"
+      }
+    ]
+  },
+  {
+    "name": "U0143PTN6V6",
+    "feeds": [
+      {
+        "service": "zenn",
+        "value": "yahiro"
+      }
+    ]
+  },
+  {
+    "name": "U01KZJ28V39",
+    "feeds": [
+      {
+        "service": "qiita",
+        "value": "Bluemo"
+      }
+    ]
+  },
+  {
+    "name": "U01L7RWH44W",
+    "feeds": [
+      {
+        "service": "qiita",
+        "value": "u7693"
+      },
+      {
+        "service": "zenn",
+        "value": "u7693"
+      }
+    ]
+  },
+  {
+    "name": "U01NV93S7C4",
+    "feeds": [
+      {
+        "service": "qiita",
+        "value": "tattira120"
+      },
+      {
+        "service": "zenn",
+        "value": "tattira120"
+      }
+    ]
+  },
+  {
+    "name": "U01QSSYJ3EZ",
+    "feeds": [
+      {
+        "service": "qiita",
+        "value": "SEI_Go"
+      },
+      {
+        "service": "zenn",
+        "value": "watson_sei"
+      }
+    ]
+  }
+]
