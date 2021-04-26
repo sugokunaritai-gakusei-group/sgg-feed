@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -23,37 +24,29 @@ type feedType struct {
 	Value string `json:"value"`
 }
 
-type individualFeeds struct {
-	Name string `json:"name"`
-	Feeds []feedType `json:"feeds"`
-}
-
 func GetFeeds(rawJSON []byte) []*feeder.Item {
-	var data []individualFeeds
+	var data []feedType
 	var combinedItem []feeder.Crawler
 	json.Unmarshal(rawJSON, &data)
-	for _, t := range data {
-		for _, item := range t.Feeds {
-			fmt.Println(t.Name, item.Service)
-			var rss feeder.Crawler
-			if item.Service == "qiita" {
-				rss = feeder.NewAtomCrawler("https://qiita.com/" + item.Value + "/feed")
-			}
-			if item.Service == "zenn" {
-				rss = feeder.NewRSSCrawler("https://zenn.dev/" + item.Value + "/feed")
-			}
-			if item.Service == "other" {
-				rss = feeder.NewRSSCrawler(item.Value)
-			}
-			combinedItem = append(combinedItem, rss)
+	for _, item := range data {
+		var rss feeder.Crawler
+		if item.Service == "qiita" {
+			rss = feeder.NewAtomCrawler("https://qiita.com/" + item.Value + "/feed")
 		}
+		if item.Service == "zenn" {
+			rss = feeder.NewRSSCrawler("https://zenn.dev/" + item.Value + "/feed")
+		}
+		if item.Service == "other" {
+			rss = feeder.NewRSSCrawler(item.Value)
+		}
+		combinedItem = append(combinedItem, rss)
 	}
 	feedItem, err := feeder.Crawl(combinedItem...)
 	ErrorHandling(err)
 	return feedItem
 }
 
-func GenerateFeed(combinedFeedItems []*feeder.Item) []io.Reader {
+func GenerateFeed(combinedFeedItems []*feeder.Item) []*string {
 	finalFeed := &feeder.Feed{
 		Title: "SGG feed",
 		Link: &feeder.Link{Href: "https://example.com/feed"},
@@ -64,37 +57,43 @@ func GenerateFeed(combinedFeedItems []*feeder.Item) []io.Reader {
 		Created: time.Now(),
 		Items: combinedFeedItems,
 	}
-	rss, err := finalFeed.ToRSSReader()
+	rss, err := finalFeed.ToRSS()
 	ErrorHandling(err)
-	json, err := finalFeed.ToJSONReader()
+	json, err := finalFeed.ToJSON()
 	ErrorHandling(err)
-	return []io.Reader{ rss, json }
+	return []*string{ &rss, &json }
 }
 
-func HostFeeds(readerArray []io.Reader) {
-	rssReader := &readerArray[0]
-	jsonReader := &readerArray[1]
+func HostFeeds(readerArray []*string) {
+	rssReader := readerArray[0]
+	jsonReader := readerArray[1]
 	http.HandleFunc("/rss", func(writer http.ResponseWriter, req *http.Request) {
-		writer.Header().Set("Content-Type", "application/rss+xml")
+		writer.Header().Set("Content-Type", "application/rss+xml;charset=UTF-8")
 		writer.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 		writer.Header().Set("Access-Control-Allow-Origin", "*")
 		writer.Header().Set( "Access-Control-Allow-Methods","GET, POST, PUT, DELETE, OPTIONS" )
+		fmt.Println("Content Header has been set")
 		if (*req).Method == "OPTIONS" {
+			fmt.Println("Preflight")
 			return
 		}
-		_, err := io.Copy(writer, *rssReader)
+		reader := strings.NewReader(*rssReader)
+		_, err := io.Copy(writer, reader)
 		ErrorHandling(err)
 		return
 	})
 	http.HandleFunc("/api", func(writer http.ResponseWriter, req *http.Request) {
-		writer.Header().Set("Content-Type", "application/json")
+		writer.Header().Set("Content-Type", "application/json;charset=UTF-8")
 		writer.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 		writer.Header().Set("Access-Control-Allow-Origin", "*")
 		writer.Header().Set( "Access-Control-Allow-Methods","GET, POST, PUT, DELETE, OPTIONS" )
+		fmt.Println("Content Header has been set")
 		if (*req).Method == "OPTIONS" {
+			fmt.Println("Preflight")
 			return
 		}
-		_, err := io.Copy(writer, *jsonReader)
+		reader := strings.NewReader(*jsonReader)
+		_, err := io.Copy(writer, reader)
 		ErrorHandling(err)
 		return
 	})
