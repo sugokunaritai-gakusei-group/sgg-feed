@@ -1,0 +1,132 @@
+@font-face {
+    font-family: "corp";
+    src: local("Corporate Logo ver2 Bold"),
+         url("./corp.ttf") format("truetype");
+    font-display: swap;
+}
+
+html, body {
+    padding: 0;
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+    color: #444444;
+    background: #45C9B1;
+    font-family: "corp", arial, sans-serif;
+    overflow: hidden;
+}
+a, a:hover {
+    text-decoration: none;
+    color: inherit;
+}
+header {
+    padding: 0 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.header-left {
+    font-size: 15px;
+    line-height: 30px;
+}
+.header-left-float {
+    padding: 0;
+    margin: 0;
+    width: 400px;
+    height: 32px;
+    position: absolute;
+    transform: rotate(90deg);
+    top: 50%;
+    right: -170px;
+    text-align: center;
+}
+.header-left-float h1 {
+    margin: 0;
+}
+.header-right {
+    display: flex;
+    align-items: center;
+}
+.header-right select, .header-right input {
+    color: #444444;
+    border: 5px #444444 solid;
+    height: 60px;
+    font-weight: bold;
+    padding: 0 10px;
+    background: #f5f5f5;
+}
+.header-right input {
+    border-left: none;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+    width: 300px;
+}
+.articles {
+    position: absolute;
+    bottom: 50%;
+    left: 50%;
+    transform: translate(-50%, 55%);
+    width: 30vw;
+    min-width: 350px;
+    max-width: 700px;
+    height: 75vh;
+    background: #f5f5f5;
+    border: 5px #444444 solid;
+    box-shadow: 0 0 40px 0 rgba(0, 0, 0, 0.2);
+    text-align: center;
+    margin: 0 auto;
+}
+.articles > h2 {
+    height: 25px;
+    padding-top: 10px;
+    margin: 0;
+    maergin-bottom: 20px;
+    font-size: 18px;
+    border-bottom: 5px #45C9B1 solid;
+    display: inline-block;
+}
+.articles-container {
+    width: 90%;
+    height: calc(100% - 60px);
+    overflow-y: auto;
+    margin: 0 auto;
+    margin-top: 20px;
+}
+.articles-container-item {
+    padding: 20px;
+    text-align: left;
+    border-bottom: 5px #444444 solid;
+}
+.articles-container-item:hover {
+    background: #cecece;
+}
+.articles-container-item-info {
+    font-size: 13px;
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+.articles-container-item-info-date {
+    color: #45C9B1;
+}
+.articles-container-item-info-site {
+    color: #888888;
+}
+
+@media screen and (max-width: 1000px) {
+    header {
+        display: block;
+    }
+    .header-right {
+        display: flex;
+        justify-content: center;
+    }
+    .header-right select, .header-right input {
+        height: 90px;
+    }
+    .articles {
+        width: 95vw;
+    }
+}

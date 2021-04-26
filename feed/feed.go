@@ -67,6 +67,7 @@ func GenerateFeed(combinedFeedItems []*feeder.Item) []*string {
 func HostFeeds(readerArray []*string) {
 	rssReader := readerArray[0]
 	jsonReader := readerArray[1]
+	http.Handle("/", http.FileServer(http.Dir("./static")))
 	http.HandleFunc("/rss", func(writer http.ResponseWriter, req *http.Request) {
 		writer.Header().Set("Content-Type", "application/rss+xml;charset=UTF-8")
 		writer.Header().Set("Access-Control-Allow-Headers", "Content-Type")

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>feed | すごくなりたいがくせいぐるーぷ</title>
+    <meta name="description" content="すごくなりたいがくせいぐるーぷのメンバーが書いた記事を集約しています。RSSとJSON形式で配信中！">
+    <meta name="keyword" content="SGG,すごくなりたいがくせいぐるーぷ">
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="./index.css">
+</head>
+<body>
+<header>
+    <div class="header-left">
+        <div class="header-left-float"><h1>すごくなりたいがくせいぐるーぷ</h1></div>
+        <h2>SGGメンバーの記事をまとめたフィードです。<br>RSSとJSON形式で取得できます</h2>
+    </div>
+    <div class="header-right">
+        <select id="select" onchange="DOMEV.changeURL()">
+            <option value="https://sgg-feed.appspot.com/rss">RSS</option>
+            <option value="https://sgg-feed.appspot.com/api">JSON</option>
+        </select>
+        <input id="header_url" onClick="this.select();" value="https://sgg-feed.appspot.com/rss" readonly>
+    </div>
+</header>
+<div class="articles">
+    <h2>最新50件の記事</h2>
+    <div id="articles_container" class="articles-container"></div>
+</div>
+<script type="text/ecmascript" src="./index.js"></script>
+</body>
+</html>
