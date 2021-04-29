@@ -24,32 +24,46 @@ type feedType struct {
 	Value string `json:"value"`
 }
 
+func crawlFeed(item feedType, feedChannel chan feeder.Crawler) {
+	if item.Service == "qiita" {
+		feedChannel <- feeder.NewAtomCrawler("https://qiita.com/" + item.Value + "/feed")
+	}
+	if item.Service == "zenn" {
+		feedChannel <- feeder.NewRSSCrawler("https://zenn.dev/" + item.Value + "/feed")
+	}
+	if item.Service == "other" {
+		feedChannel <- feeder.NewRSSCrawler(item.Value)
+	}
+}
+
 func GetFeeds(rawJSON []byte) []*feeder.Item {
 	var data []feedType
 	var combinedItem []feeder.Crawler
 	json.Unmarshal(rawJSON, &data)
+	feedChannel := make(chan feeder.Crawler)
+	defer close(feedChannel)
 	for _, item := range data {
-		var rss feeder.Crawler
-		if item.Service == "qiita" {
-			rss = feeder.NewAtomCrawler("https://qiita.com/" + item.Value + "/feed")
-		}
-		if item.Service == "zenn" {
-			rss = feeder.NewRSSCrawler("https://zenn.dev/" + item.Value + "/feed")
-		}
-		if item.Service == "other" {
-			rss = feeder.NewRSSCrawler(item.Value)
-		}
-		combinedItem = append(combinedItem, rss)
+		go crawlFeed(item, feedChannel)
 	}
-	feedItem, err := feeder.Crawl(combinedItem...)
-	ErrorHandling(err)
-	return feedItem
+	var count int
+	for {
+		select {
+		case feed := <- feedChannel:
+			combinedItem = append(combinedItem, feed)
+			count++
+			if count == len(data) {
+				feedItem, err := feeder.Crawl(combinedItem...)
+				ErrorHandling(err)
+				return feedItem
+			}
+		}
+	}
 }
 
 func GenerateFeed(combinedFeedItems []*feeder.Item) []*string {
 	finalFeed := &feeder.Feed{
 		Title: "SGG feed",
-		Link: &feeder.Link{Href: "https://example.com/feed"},
+		Link: &feeder.Link{Href: "https:/sgg-feed.appspot.com/rss"},
 		Description: "Integrated RSS&JSON feed of SGG Community. Articles are all written in Japanese.",
 		Author: &feeder.Author{
 			Name: "SGG Members",
