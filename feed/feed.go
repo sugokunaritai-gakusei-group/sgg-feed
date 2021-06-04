@@ -49,7 +49,7 @@ func GetFeeds(rawJSON []byte) []*feeder.Item {
 func GenerateFeed(combinedFeedItems []*feeder.Item) []*string {
 	finalFeed := &feeder.Feed{
 		Title: "SGG feed",
-		Link: &feeder.Link{Href: "https://example.com/feed"},
+		Link: &feeder.Link{Href: "sgg-feed.appspot.com/"},
 		Description: "Integrated RSS&JSON feed of SGG Community. Articles are all written in Japanese.",
 		Author: &feeder.Author{
 			Name: "SGG Members",

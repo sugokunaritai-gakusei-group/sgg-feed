@@ -1,7 +1,11 @@
 [
   {
+    "service": "zenn",
+    "value": "kota_yata"
+  },
+  {
     "service": "other",
-    "value": "https://feed.kota-yata.com/rss"
+    "value": "https://blog.kota-yata.com/rss.xml"
   },
   {
     "service": "qiita",
@@ -89,10 +93,6 @@
   },
   {
     "service": "qiita",
-    "value": "hinatao3o"
-  },
-  {
-    "service": "qiita",
     "value": "tkgshn"
   },
   {
@@ -122,14 +122,6 @@
   {
     "service": "qiita",
     "value": "Bluemo"
-  },
-  {
-    "service": "qiita",
-    "value": "u7693"
-  },
-  {
-    "service": "zenn",
-    "value": "u7693"
   },
   {
     "service": "qiita",
