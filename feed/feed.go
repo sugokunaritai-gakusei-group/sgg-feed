@@ -43,7 +43,7 @@ func GetFeeds(rawJSON []byte) []*feeder.Item {
 	}
 	feedItem, err := feeder.Crawl(combinedItem...)
 	ErrorHandling(err)
-	return feedItem
+ 	return feedItem
 }
 
 func GenerateFeed(combinedFeedItems []*feeder.Item) []*string {
