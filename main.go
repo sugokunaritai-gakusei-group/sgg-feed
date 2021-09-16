@@ -9,6 +9,6 @@ func main() {
 	rawJSON, err := ioutil.ReadFile("./data.json")
 	feed.ErrorHandling(err)
 	combinedFeedItems := feed.GetFeeds(rawJSON)
-	readerArray := feed.GenerateFeed(combinedFeedItems)
-	feed.HostFeeds(readerArray)
+	readerArray, createdAt := feed.GenerateFeed(combinedFeedItems)
+	feed.HostFeeds(readerArray, rawJSON, createdAt)
 }

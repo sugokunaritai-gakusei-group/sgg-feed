@@ -3,25 +3,25 @@ package feed
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/p1ass/feeder"
 	"io"
 	"log"
 	"net/http"
 	"os"
 	"strings"
 	"time"
+
+	"github.com/p1ass/feeder"
 )
 
 func ErrorHandling(errMessage error) {
 	if errMessage != nil {
-		log.Fatal(errMessage)
-		os.Exit(1)
+		log.Println(errMessage)
 	}
 }
 
 type feedType struct {
 	Service string `json:"service"`
-	Value string `json:"value"`
+	Value   string `json:"value"`
 }
 
 func GetFeeds(rawJSON []byte) []*feeder.Item {
@@ -43,41 +43,47 @@ func GetFeeds(rawJSON []byte) []*feeder.Item {
 	}
 	feedItem, err := feeder.Crawl(combinedItem...)
 	ErrorHandling(err)
- 	return feedItem
+	return feedItem
 }
 
-func GenerateFeed(combinedFeedItems []*feeder.Item) []*string {
+func GenerateFeed(combinedFeedItems []*feeder.Item) ([]*string, time.Time) {
 	finalFeed := &feeder.Feed{
-		Title: "SGG feed",
-		Link: &feeder.Link{Href: "sgg-feed.appspot.com/"},
+		Title:       "SGG feed",
+		Link:        &feeder.Link{Href: "sgg-feed.appspot.com/"},
 		Description: "Integrated RSS&JSON feed of SGG Community. Articles are all written in Japanese.",
 		Author: &feeder.Author{
 			Name: "SGG Members",
 		},
 		Created: time.Now(),
-		Items: combinedFeedItems,
+		Items:   combinedFeedItems,
 	}
 	rss, err := finalFeed.ToRSS()
 	ErrorHandling(err)
 	json, err := finalFeed.ToJSON()
 	ErrorHandling(err)
-	return []*string{ &rss, &json }
+	return []*string{&rss, &json}, time.Now()
 }
 
-func HostFeeds(readerArray []*string) {
-	rssReader := readerArray[0]
-	jsonReader := readerArray[1]
+func HostFeeds(readerArray []*string, rawJSON []byte, createdAt time.Time) {
 	http.Handle("/", http.FileServer(http.Dir("./static")))
 	http.HandleFunc("/rss", func(writer http.ResponseWriter, req *http.Request) {
 		writer.Header().Set("Content-Type", "application/rss+xml;charset=UTF-8")
 		writer.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 		writer.Header().Set("Access-Control-Allow-Origin", "*")
-		writer.Header().Set( "Access-Control-Allow-Methods","GET, POST, PUT, DELETE, OPTIONS" )
+		writer.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 		fmt.Println("Content Header has been set")
 		if (*req).Method == "OPTIONS" {
 			fmt.Println("Preflight")
 			return
 		}
+
+		elapsedTime := time.Since(createdAt)
+		if elapsedTime.Hours()*60+elapsedTime.Minutes() > 60 {
+			readerArray, createdAt = GenerateFeed(GetFeeds(rawJSON))
+			println("regenerated")
+		}
+		rssReader := readerArray[0]
+
 		reader := strings.NewReader(*rssReader)
 		_, err := io.Copy(writer, reader)
 		ErrorHandling(err)
@@ -87,12 +93,19 @@ func HostFeeds(readerArray []*string) {
 		writer.Header().Set("Content-Type", "application/json;charset=UTF-8")
 		writer.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 		writer.Header().Set("Access-Control-Allow-Origin", "*")
-		writer.Header().Set( "Access-Control-Allow-Methods","GET, POST, PUT, DELETE, OPTIONS" )
+		writer.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 		fmt.Println("Content Header has been set")
 		if (*req).Method == "OPTIONS" {
 			fmt.Println("Preflight")
 			return
 		}
+
+		elapsedTime := time.Since(createdAt)
+		if elapsedTime.Hours()*60+elapsedTime.Minutes() > 60 {
+			readerArray, createdAt = GenerateFeed(GetFeeds(rawJSON))
+		}
+		jsonReader := readerArray[1]
+
 		reader := strings.NewReader(*jsonReader)
 		_, err := io.Copy(writer, reader)
 		ErrorHandling(err)
@@ -103,7 +116,6 @@ func HostFeeds(readerArray []*string) {
 		portName = "3432"
 	}
 	fmt.Println("RSS feed has been published at http://localhost:" + portName)
-	err := http.ListenAndServe(":" + portName, nil)
+	err := http.ListenAndServe(":"+portName, nil)
 	ErrorHandling(err)
 }
-
