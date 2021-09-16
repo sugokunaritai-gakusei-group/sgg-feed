@@ -26,7 +26,7 @@ type feedType struct {
 
 func GetFeeds(rawJSON []byte) []*feeder.Item {
 	var data []feedType
-	var combinedItem []feeder.Crawler
+	var feedItems []*feeder.Item
 	json.Unmarshal(rawJSON, &data)
 	for _, item := range data {
 		var rss feeder.Crawler
@@ -39,11 +39,11 @@ func GetFeeds(rawJSON []byte) []*feeder.Item {
 		if item.Service == "other" {
 			rss = feeder.NewRSSCrawler(item.Value)
 		}
-		combinedItem = append(combinedItem, rss)
+		feedItem, err := feeder.Crawl(rss)
+		ErrorHandling(err)
+		feedItems = append(feedItems, feedItem...)
 	}
-	feedItem, err := feeder.Crawl(combinedItem...)
-	ErrorHandling(err)
-	return feedItem
+	return feedItems
 }
 
 func GenerateFeed(combinedFeedItems []*feeder.Item) ([]*string, time.Time) {
