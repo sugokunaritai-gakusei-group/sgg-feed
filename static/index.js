@@ -10,7 +10,7 @@ class DOMEV {
         this.urlInput.value = this.select.value;
     }
     static async getArticles() {
-        const res = await fetch("https://sgg-feed.appspot.com/api");
+        const res = await fetch("/api");
         const data = await res.json();
         const items = data.items;
         items.sort((a, b) => {
