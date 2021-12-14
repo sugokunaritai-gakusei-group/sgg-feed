@@ -77,9 +77,10 @@ func GenerateFeed(combinedFeedItems []*feeder.Item) ([]*string, time.Time) {
 	return []*string{&rss, &json}, time.Now()
 }
 
-func HostFeeds(readerArray []*string, rawJSON []byte, createdAt time.Time) {
-	http.Handle("/", http.FileServer(http.Dir("./static")))
-	http.HandleFunc("/rss", func(writer http.ResponseWriter, req *http.Request) {
+func HostFeeds(readerArray []*string, rawJSON []byte, createdAt time.Time, w http.ResponseWriter, r *http.Request) {
+	serveMux := http.NewServeMux()
+	serveMux.Handle("/", http.FileServer(http.Dir("./static")))
+	serveMux.HandleFunc("/rss", func(writer http.ResponseWriter, req *http.Request) {
 		writer.Header().Set("Content-Type", "application/rss+xml;charset=UTF-8")
 		writer.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 		writer.Header().Set("Access-Control-Allow-Origin", "*")
@@ -102,7 +103,7 @@ func HostFeeds(readerArray []*string, rawJSON []byte, createdAt time.Time) {
 		ErrorHandling(err)
 		return
 	})
-	http.HandleFunc("/api", func(writer http.ResponseWriter, req *http.Request) {
+	serveMux.HandleFunc("/api", func(writer http.ResponseWriter, req *http.Request) {
 		writer.Header().Set("Content-Type", "application/json;charset=UTF-8")
 		writer.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 		writer.Header().Set("Access-Control-Allow-Origin", "*")
@@ -128,8 +129,11 @@ func HostFeeds(readerArray []*string, rawJSON []byte, createdAt time.Time) {
 	if portName == "" {
 		portName = "3432"
 	}
-
-	fmt.Println("RSS feed has been published at http://localhost:" + portName)
-	err := http.ListenAndServe(":"+portName, nil)
-	ErrorHandling(err)
+	if w != nil && r != nil {
+		serveMux.ServeHTTP(w, r)
+	} else {
+		fmt.Println("RSS feed has been published at http://localhost:" + portName)
+		err := http.ListenAndServe(":"+portName, serveMux)
+		ErrorHandling(err)
+	}
 }
