@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"sort"
 	"strings"
 	"time"
 
@@ -27,7 +28,10 @@ type feedType struct {
 func GetFeeds(rawJSON []byte) []*feeder.Item {
 	var data []feedType
 	var feedItems []*feeder.Item
+	feedItemsChannel := make(chan []*feeder.Item, len(data))
+
 	json.Unmarshal(rawJSON, &data)
+
 	for _, item := range data {
 		var rss feeder.Crawler
 		if item.Service == "qiita" {
@@ -39,10 +43,19 @@ func GetFeeds(rawJSON []byte) []*feeder.Item {
 		if item.Service == "other" {
 			rss = feeder.NewRSSCrawler(item.Value)
 		}
-		feedItem, err := feeder.Crawl(rss)
-		ErrorHandling(err)
-		feedItems = append(feedItems, feedItem...)
+		go func() {
+			feedItem, err := feeder.Crawl(rss)
+			ErrorHandling(err)
+			feedItemsChannel <- feedItem
+		}()
 	}
+
+	for range data {
+		feedItems = append(feedItems, (<-feedItemsChannel)...)
+	}
+	close(feedItemsChannel)
+
+	sort.Slice(feedItems, func(i, j int) bool { return feedItems[i].Created.After(*feedItems[j].Created) })
 	return feedItems
 }
 
@@ -115,6 +128,7 @@ func HostFeeds(readerArray []*string, rawJSON []byte, createdAt time.Time) {
 	if portName == "" {
 		portName = "3432"
 	}
+
 	fmt.Println("RSS feed has been published at http://localhost:" + portName)
 	err := http.ListenAndServe(":"+portName, nil)
 	ErrorHandling(err)
