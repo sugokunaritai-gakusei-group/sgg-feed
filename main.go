@@ -10,5 +10,5 @@ func main() {
 	feed.ErrorHandling(err)
 	combinedFeedItems := feed.GetFeeds(rawJSON)
 	readerArray, createdAt := feed.GenerateFeed(combinedFeedItems)
-	feed.HostFeeds(readerArray, rawJSON, createdAt)
+	feed.HostFeeds(readerArray, rawJSON, createdAt, nil, nil)
 }

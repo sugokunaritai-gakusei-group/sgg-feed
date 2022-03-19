@@ -1,0 +1,18 @@
+{
+  "functions": {
+    "api/index.go": {
+      "includeFiles": "static/**",
+      "maxDuration": 10
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/(api|rss)",
+      "destination": "/api/index.go"
+    },
+    {
+      "source": "/:path(.*)",
+      "destination": "/static/:path"
+    }
+  ]
+}
