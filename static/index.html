@@ -9,23 +9,25 @@
     <link rel="stylesheet" href="./index.css">
 </head>
 <body>
-<header>
-    <div class="header-left">
-        <div class="header-left-float"><h1>すごくなりたいがくせいぐるーぷ</h1></div>
-        <h2>SGGメンバーの記事をまとめたフィードです。<br>RSSとJSON形式で取得できます</h2>
+    <header>
+        <div class="header-left">
+            <div class="header-left-float">
+                <h1>すごくなりたいがくせいぐるーぷ</h1>
+            </div>
+            <h2>SGGメンバーの記事をまとめたフィードです。<br>RSSとJSON形式で取得できます</h2>
+        </div>
+        <div class="header-right">
+            <select id="select" onchange="DOMEV.changeURL()">
+                <option value="https://feed.sugokunaritai.dev/rss">RSS</option>
+                <option value="https://feed.sugokunaritai.dev/api">JSON</option>
+            </select>
+            <input id="header_url" onClick="this.select();" value="https://feed.sugokunaritai.dev/rss" readonly>
+        </div>
+    </header>
+    <div class="articles">
+        <h2>最新50件の記事</h2>
+        <div id="articles_container" class="articles-container"></div>
     </div>
-    <div class="header-right">
-        <select id="select" onchange="DOMEV.changeURL()">
-            <option value="https://sgg-feed.appspot.com/rss">RSS</option>
-            <option value="https://sgg-feed.appspot.com/api">JSON</option>
-        </select>
-        <input id="header_url" onClick="this.select();" value="https://sgg-feed.appspot.com/rss" readonly>
-    </div>
-</header>
-<div class="articles">
-    <h2>最新50件の記事</h2>
-    <div id="articles_container" class="articles-container"></div>
-</div>
-<script type="text/ecmascript" src="./index.js"></script>
+    <script type="text/ecmascript" src="./index.js"></script>
 </body>
 </html>
