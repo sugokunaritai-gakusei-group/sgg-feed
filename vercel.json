@@ -1,18 +1,35 @@
 {
-  "functions": {
-    "api/index.go": {
-      "includeFiles": "static/**",
-      "maxDuration": 10
-    }
-  },
   "rewrites": [
     {
-      "source": "/(api|rss)",
-      "destination": "/api/index.go"
+      "source": "/api",
+      "destination": "/static/feed.json"
+    },
+    {
+      "source": "/rss",
+      "destination": "/static/feed.xml"
     },
     {
       "source": "/:path(.*)",
       "destination": "/static/:path"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "key": "Access-Control-Allow-Methods",
+          "value": "GET, POST, PUT, DELETE, OPTIONS"
+        },
+        {
+          "key": "Access-Control-Allow-Headers",
+          "value": "Content-Type"
+        }
+      ]
     }
   ]
 }

@@ -1,2 +1,6 @@
 .DS_Store
 .idea
+
+.vercel
+static/feed.xml
+static/feed.json
