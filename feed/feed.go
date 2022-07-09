@@ -43,7 +43,6 @@ func GetFeeds(rawJSON []byte) []*feeder.Item {
 		if item.Service == "other" {
 			rss = feeder.NewRSSCrawler(item.Value)
 		}
-		println(rss)
 		go func() {
 			feedItem, err := feeder.Crawl(rss)
 			ErrorHandling(err)
