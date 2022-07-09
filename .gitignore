@@ -4,3 +4,5 @@
 .vercel
 static/feed.xml
 static/feed.json
+
+./sgg-feed

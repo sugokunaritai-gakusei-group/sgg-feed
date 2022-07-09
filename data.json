@@ -1,9 +1,5 @@
 [
   {
-    "service": "zenn",
-    "value": "kota_yata"
-  },
-  {
     "service": "other",
     "value": "https://kota-yata.com/rss.xml"
   },
