@@ -1,14 +1,6 @@
 {
   "rewrites": [
     {
-      "source": "/api",
-      "destination": "/static/feed.json"
-    },
-    {
-      "source": "/rss",
-      "destination": "/static/feed.xml"
-    },
-    {
       "source": "/:path(.*)",
       "destination": "/static/:path"
     }
@@ -28,6 +20,24 @@
         {
           "key": "Access-Control-Allow-Headers",
           "value": "Content-Type"
+        }
+      ]
+    },
+    {
+      "source": "/api",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/json"
+        }
+      ]
+    },
+    {
+      "source": "/rss",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/xml"
         }
       ]
     }

@@ -1,0 +1,7 @@
+/api
+  Content-Type: application/json
+  Access-Control-Allow-Origin: *
+
+/feed
+  Content-Type: application/xml
+  Access-Control-Allow-Origin: *
